@@ -1,0 +1,26 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+
+# Security Headers
+Header set X-Content-Type-Options "nosniff"
+Header set X-XSS-Protection "1; mode=block"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+# Disable directory listing
+Options -Indexes
+
+# Protect files and directories
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect sensitive files
+<FilesMatch "(composer\.json|composer\.lock|\.gitignore|\.env)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch> 
